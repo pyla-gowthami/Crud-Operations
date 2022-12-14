@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using web.Models;
+
+
+
+namespace web.Controllers
+{
+    public class productController : ApiController
+    {
+        Entities db = new Entities();        //ADD POST REQUEST     
+        public string Post(product product)
+        {
+            db.products.Add(product);
+            db.SaveChanges();
+            return "Product added";
+        }
+        public IEnumerable<product> Get()
+        {
+            return db.products.ToList();
+        }
+        //get single record
+        public product Get(int id)
+        {
+            product product = db.products.Find(id);
+            return product;
+        }
+
+
+
+
+
+       public string put(int id, product product)
+        {
+            var product_ = db.products.Find(id);
+            product_.Name = product.Name;
+            product_.price = product.price;
+            product_.Quantity = product.Quantity;
+            product_.Active = product_.Active;
+
+
+
+
+
+           db.Entry(product_).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return "product update";
+        }        //delete      
+        public string Delete(int id)
+        {
+            product product = db.products.Find(id);
+            db.products.Remove(product);
+            db.SaveChanges();
+            return "deleted";
+
+
+
+
+
+       }
+    }
+}
+
+
+
+
+
+
+       
+  
+
+
+
+
+
